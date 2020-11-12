@@ -1,0 +1,191 @@
+-----------Centos--------------
+
+1. Actualizar Centos
+
+# sudo yum update
+
+2. Setear hora y nombre
+
+# timedatectl
+# sudo timedatectl set-timezone America/Argentina/Buenos_Aires
+# sudo reboot
+# hostnamectl
+# sudo hostnamectl set-hostname NOMBRE
+# sudo reboot
+
+3. Archivo hosts
+
+# sudo vi /etc/hosts
+
+agregar localhost -- 127.0.0.1 NOMBRE
+
+4. Setear IP
+
+# ip addr list
+# cd /etc/sysconfig/network-scripts/
+
+-------dhcp-------
+
+HWADDR="08:00:27:99:F6:7A"
+TYPE="Ethernet"
+BOOTPROTO="dhcp"
+DEFROUTE="yes"
+PEERDNS="yes"
+PEERROUTES="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_PEERDNS="yes"
+IPV6_PEERROUTES="yes"
+IPV6_FAILURE_FATAL="no"
+NAME="enp0s3"
+UUID="30d5594c-d4db-4f2d-bc0d-91ffd2571035"
+ONBOOT="yes"
+
+-------ip fija-------
+
+HWADDR="08:00:27:99:F6:7A"
+TYPE="Ethernet"
+
+BOOTPROTO="static"
+IPADDR="192.168.1.199"
+NETMASK="255.255.255.0"
+GATEWAY="10.5.10.1"
+DNS1="10.5.10.2"
+DOMAIN="test.local"
+
+DEFROUTE="yes"
+PEERDNS="yes"
+PEERROUTES="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_PEERDNS="yes"
+IPV6_PEERROUTES="yes"
+IPV6_FAILURE_FATAL="no"
+NAME="enp0s3"
+UUID="30d5594c-d4db-4f2d-bc0d-91ffd2571035"
+ONBOOT="yes"
+
+
+Setear dns
+
+# cat /etc/resolv.conf
+
+agregar nameserver 8.8.8.8
+
+
+5. SElinux
+pasar de Enforcing a Permissive
+
+# getenforce
+# sudo setenforce 0
+
+
+6. -----------------APACHE-------------------
+
+Instalar Apache
+
+# sudo yum install httpd
+# httpd -v
+# sudo systemctl status httpd
+# sudo systemctl start httpd
+# sudo systemctl enable httpd
+
+7. ------------------MySQL--------------------
+
+Instalar MySql
+
+# sudo yum update
+
+Centos7:
+# sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+
+# sudo rpm -Uvh mysql80-community-release-el8-1.noarch.rpm
+
+Centos8:
+# sudo wget https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+
+sudo rpm -Uvh mysql80-community-release-el8-1.noarch.rpm
+
+----- instalar Mysql:
+
+# sudo yum install mysql-server
+
+# sudo systemctl start mysqld
+# sudo systemctl enable mysqld
+# sudo systemctl status mysqld
+
+8. Configurar MySql
+
+# sudo mysql_secure_installation
+
+todo yes
+
+# mysql --version
+# mysql -u root -p
+
+"password"
+
+dentro de la base: show databases;
+
+9. Firewall
+# sudo firewall-cmd --permanent --add-service=http
+# sudo firewall-cmd --permanent --add-service=https
+# sudo firewall-cmd --reload
+
+10. Opcional apache priviligios
+
+sudo chmod -R 755 /var/www
+
+11. ---------------PHP------------------------
+
+Instalar epel:
+# sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+Instalar remi:
+# sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+Instalar yum utils:
+# sudo yum install yum-utils
+
+12. PHP version:
+
+# sudo yum-config-manager --enable remi-php55   [Install PHP 5.5]
+# sudo yum-config-manager --enable remi-php56   [Install PHP 5.6]
+# sudo yum-config-manager --enable remi-php72   [Install PHP 7.2]
+# sudo yum-config-manager --enable remi-php73   [Install PHP 7.3]
+
+
+# sudo yum install php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo
+
+13. Check installed
+
+# php -v
+
+# sudo vi /var/www/html/info.php  
+
+<?php phpinfo();
+
+probar en localhost/info.php
+
+14. ---------------CPANEL---------------------
+https://clouding.io/hc/es/articles/360011407560-Instalaci%C3%B3n-de-cPanel-en-Centos-7
+
+15. abrir puertos
+
+
+    TCP 2082 (cPanel sin SSL)
+    TCP 2083 (cPanel con SSL)
+    TCP 2086 (WHM sin SSL)
+    TCP 2087 (WHM con SSL)
+
+Pasos previos a la instalación cPanel
+
+# service NetworkManager stop
+# chkconfig NetworkManager off
+# hostname midominio.com
+
+# # cd /home && curl -o latest -L https://securedownloads.cpanel.net/latest && sh latest
